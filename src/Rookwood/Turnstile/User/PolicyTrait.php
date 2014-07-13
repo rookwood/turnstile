@@ -80,10 +80,7 @@ trait PolicyTrait {
      */
     public function isA($role)
     {
-        if ( ! $role instanceOf Model)
-        {
-            $role = Role::where('name', '=', $role)->firstOrFail();
-        }
+        $role = $this->ensureRoleObject($role);
 
         if ($this->roles->contains($role))
         {
@@ -105,6 +102,20 @@ trait PolicyTrait {
         return $this->isA($role);
     }
 
+    public function addRole($role)
+    {
+        $role = $this->ensureRoleObject($role);
+
+        $this->roles()->attach($role);
+    }
+
+    public function removeRole($role)
+    {
+        $role = $this->ensureRoleObject($role);
+
+        $this->roles()->detach($role);
+    }
+
     /**
      * User has many roles
      *
@@ -113,5 +124,18 @@ trait PolicyTrait {
     public function roles()
     {
         return $this->belongsToMany('Role');
+    }
+
+    /**
+     * @param $role
+     * @return mixed
+     */
+    protected function ensureRoleObject($role)
+    {
+        if (!$role instanceOf Model) {
+            $role = Role::where('name', '=', $role)->firstOrFail();
+            return $role;
+        }
+        return $role;
     }
 } 

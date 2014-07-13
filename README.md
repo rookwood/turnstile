@@ -117,3 +117,20 @@ public function __construct()
 Now that you've done all the set-up, actually using this is fairly easy. Any time you want to see if the user is allowed to do something, you just call `$user->can('do_something', array('someData' => 'data needed for evaluation'))`.  This will return a boolean.  If it's False, you can get the status code sent by the policy at `Rookwood\Turnstile\Policies\Policy::$policyFailureState`.  Probably makes sense to import that namespace and have a separate method or class to deal with failures.  Depending on what they were trying to do, it might even make sense to set a 403 NOT AUTHORIZED on the response header.  Obviously this makes more sense for actions trying to access a sensitive area of the site vs checking to see if the user can see a registration link.
 
 Then you just create your policy class with the execute method and have it return either TRUE or an error status (see example above).  Add the action name and policy class to the PolicyProvider, and you're good to go.
+
+The PolicyTrait included for your User model provides a few useful methods to help your policy classes and user roles:
+
+````php
+$user->owns($object)
+````
+Test if a relationship exists between the user and the provided object in the database
+
+````php
+$user->isA($role)
+````
+Test if a user has a particular role.  `isAn()` is also available for people like me who would frown at something like `isA('admin')`.
+
+````php
+$user->addRole($role)
+````
+Add a role to a user. Can pass either a string of the role name or a role object. `removeRole($role)` is also available.
