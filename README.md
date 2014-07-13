@@ -16,7 +16,7 @@ else
 }
 ````
 
-The "edit_comment" action is mapped to a policy class (CommentEditingPolicy for this example).
+The `edit_comment` action is mapped to a policy class via a `PolicyProvider`. For `edit_comment`, we map to `CommentEditingPolicy` for this example.
 
 ````php
 <?php namespace Vendor\Application\Policies;
