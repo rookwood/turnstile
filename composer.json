@@ -1,0 +1,25 @@
+{
+    "name": "rookwood/turnstile",
+    "description": "Policy-based ACL for Laravel 4.x",
+    "keywords" : ["acl", "policy", "laravel"],
+    "license" : "MIT",
+    "authors": [
+        {
+            "name": "Matt Hollis",
+            "email": "matthollis@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Rookwood\\Turnstile\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
