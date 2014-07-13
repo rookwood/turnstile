@@ -93,7 +93,7 @@ class PolicyProvider extends BaseProvider {
 }
 ````
 
-4: Edit your config/turnstile.php to have the namespace key point to your provider's namespace. That's how the PolicyServiceProvider class will know where to find it.
+4: Edit your `config/packages/rookwood/turnstile/turnstile.php` to have the namespace key point to your provider's namespace. That's how the PolicyServiceProvider class will know where to find it.
 
 5: Have your User model use the `Rookwood\Turnstile\User\PolicyTrait`.
 
