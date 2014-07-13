@@ -20,7 +20,7 @@ class TurnstileServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('rookwood/turnstile');
+		// $this->package moved to register because the service provider needs access to its own package config
 	}
 
 	/**
@@ -30,6 +30,8 @@ class TurnstileServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+        $this->package('rookwood/turnstile');
+
         $policyProviderClass = $this->getPolicyProviderClass();
 
         $this->app->singleton('policy', function() use($policyProviderClass)
