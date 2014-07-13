@@ -65,6 +65,7 @@ As you see, you can have a policy deny permission for any number of reasons and 
 "require" : {
     "rookwood/turnstile" : "TODO: ADD VERSION HERE"
 }
+````
 
 2: Publish configuration and run migrations
 
