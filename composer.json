@@ -1,7 +1,8 @@
 {
     "name": "rookwood/turnstile",
+    "type": "library",
     "description": "Policy-based ACL for Laravel 4.x",
-    "keywords" : ["acl", "policy", "laravel"],
+    "keywords" : ["acl", "authorization", "policy", "laravel"],
     "license" : "MIT",
     "authors": [
         {
