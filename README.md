@@ -1,5 +1,5 @@
 # Turnstile
-Turnstile is a policy-based ACL library for Laravel 4 designed to give very fine-grained control over user permissions.  This is accomplished by mapping any given user action to a policy class that evaluated if the action is allowable.  Doing such allows for more control than a simple user/role system (though roles are still easily used in Turnstile). The beauty of this is that the same system can be used for everything from protecting an admin panel to checking if a user can see a login button (if already logged in, just deny access for visibility, etc).
+Turnstile is a policy-based ACL library for Laravel 4 designed to give very fine-grained control over user permissions.  This is accomplished by mapping any given user action to a policy class that evaluates if the action is allowable.  Doing such allows for more control than a simple user/role system (though roles are still easily used in Turnstile). The beauty of this is that the same system can be used for everything from protecting an admin panel to checking if a user can see a login button (if already logged in, just deny access for visibility, etc).
 
 ### Example
 Since no one has ever used a blog example before, we'll do that here:
@@ -56,7 +56,7 @@ class CommentEditingPolicy extends Policy {
 }
 ````
 
-As you see, you can have a policy deny permission for any number of reasons and provide a specific error stating why. I like to use class constants to hold message keys that I can later translate into an actual clean message.  Added benefit: ease of translation.
+As you see, you can have a policy deny permission for any number of reasons and provide a specific error stating why. I like to use class constants to hold message keys that I can later feed to `Lang::get()` for an actual, clean message.  Added benefit: ease of translation.
 
 ### Installation
 1: Grab everything via composer
@@ -113,8 +113,10 @@ public function __construct()
 }
 ````
 
+7: In `config/app.php` add an alias for `Role` to `Rookwood\Turnstile\User\Role`. As an alternative, you can create your own Role class as long as you have a m:n relationship with your User class. If your User class is namespaced, do the same for it.
+
 ### Usage
-Now that you've done all the set-up, actually using this is fairly easy. Any time you want to see if the user is allowed to do something, you just call `$user->can('do_something', array('someData' => 'data needed for evaluation'))`.  This will return a boolean.  If it's False, you can get the status code sent by the policy at `Rookwood\Turnstile\Policies\Policy::$policyFailureState`.  Probably makes sense to import that namespace and have a separate method or class to deal with failures.  Depending on what they were trying to do, it might even make sense to set a 403 NOT AUTHORIZED on the response header.  Obviously this makes more sense for actions trying to access a sensitive area of the site vs checking to see if the user can see a registration link.
+Now that you've done all the set-up, actually using this is fairly easy. Any time you want to see if the user is allowed to do something, you just call `$user->can('do_something', array('someData' => 'data needed for evaluation'))`.  This will return a boolean.  If it's False, you can get the status code sent by the policy at `Rookwood\Turnstile\Policies\Policy::$policyFailureState`.  Probably makes sense to import that namespace and have a separate method or class to deal with failures.  Depending on what the user was trying to do, it might even make sense to set a 403 NOT AUTHORIZED on the response header.  Obviously this makes more sense for actions trying to access a sensitive area of the site vs checking to see if the user can see a registration link.
 
 Then you just create your policy class with the execute method and have it return either TRUE or an error status (see example above).  Add the action name and policy class to the PolicyProvider, and you're good to go.
 
@@ -123,12 +125,12 @@ The PolicyTrait included for your User model provides a few useful methods to he
 ````php
 $user->owns($object)
 ````
-Test if a relationship exists between the user and the provided object in the database
+Test if a relationship exists between the user and the provided object in the database:
 
 ````php
 $user->isA($role)
 ````
-Test if a user has a particular role.  `isAn()` is also available for people like me who would frown at something like `isA('admin')`.
+Test if a user has a particular role.  `isAn()` is also available for people like me who would frown at something like `isA('admin')`:
 
 ````php
 $user->addRole($role)
