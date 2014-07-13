@@ -67,14 +67,16 @@ As you see, you can have a policy deny permission for any number of reasons and 
 }
 ````
 
-2: Publish configuration and run migrations
+2: Add `Rookwood\Turnstile\TurnstileServiceProvider` to the list of service providers in `app/config/app.php`
+
+3: Publish configuration and run migrations
 
 ````bash
 $ php artisan config:publish rookwood/turnstile
 $ php artisan migrate --package="rookwood/turnstile"
 ````
 
-3: Create your PolicyProvider file (can be put anywhere as long as the autoloader can find it).
+4: Create your PolicyProvider file (can be put anywhere as long as the autoloader can find it).
 
 ````php
 
@@ -93,11 +95,11 @@ class PolicyProvider extends BaseProvider {
 }
 ````
 
-4: Edit your `config/packages/rookwood/turnstile/turnstile.php` to have the namespace key point to your provider's namespace. That's how the PolicyServiceProvider class will know where to find it.
+5: Edit your `config/packages/rookwood/turnstile/turnstile.php` to have the namespace key point to your provider's namespace. That's how the PolicyServiceProvider class will know where to find it.
 
-5: Have your User model use the `Rookwood\Turnstile\User\PolicyTrait`.
+6: Have your User model use the `Rookwood\Turnstile\User\PolicyTrait`.
 
-6: Make sure that any controller necessary has access to the current user object.  I usually do it via the constructor like thus:
+7: Make sure that any controller necessary has access to the current user object.  I usually do it via the constructor like thus:
 
 ````php
 public function __construct()
@@ -113,7 +115,7 @@ public function __construct()
 }
 ````
 
-7: In `config/app.php` add an alias for `Role` to `Rookwood\Turnstile\User\Role`. As an alternative, you can create your own Role class as long as you have a m:n relationship with your User class. If your User class is namespaced, do the same for it.
+8: In `app/config/app.php` add an alias for `Role` to `Rookwood\Turnstile\User\Role`. As an alternative, you can create your own Role class as long as you have a m:n relationship with your User class. If your User class is namespaced, do the same for it.
 
 ### Usage
 Now that you've done all the set-up, actually using this is fairly easy. Any time you want to see if the user is allowed to do something, you just call `$user->can('do_something', array('someData' => 'data needed for evaluation'))`.  This will return a boolean.  If it's False, you can get the status code sent by the policy at `Rookwood\Turnstile\Policies\Policy::$policyFailureState`.  Probably makes sense to import that namespace and have a separate method or class to deal with failures.  Depending on what the user was trying to do, it might even make sense to set a 403 NOT AUTHORIZED on the response header.  Obviously this makes more sense for actions trying to access a sensitive area of the site vs checking to see if the user can see a registration link.
