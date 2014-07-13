@@ -69,7 +69,7 @@ As you see, you can have a policy deny permission for any number of reasons and 
 
 2: Add `Rookwood\Turnstile\TurnstileServiceProvider` to the list of service providers in `app/config/app.php`
 
-3: Publish configuration and run migrations
+3: Publish configuration and run migrations. Note that your users table migration must be run before the role_user pivot table can be created.  It is dated sufficiently far enough into the future that this shouldn't be a problem as long as you have already created the migration file for your users table.
 
 ````bash
 $ php artisan config:publish rookwood/turnstile
