@@ -63,7 +63,7 @@ As you see, you can have a policy deny permission for any number of reasons and 
 
 ````js
 "require" : {
-    "rookwood/turnstile" : "TODO: ADD VERSION HERE"
+    "rookwood/turnstile" : "dev-master"
 }
 ````
 
